@@ -1,14 +1,7 @@
-use regex::Regex;
-use std::collections::HashMap;
 use std::collections::HashSet;
-use std::collections::VecDeque;
 use std::fs::File;
 use std::io::*;
 use std::vec::*;
-use utils::*;
-
-#[macro_use]
-extern crate lazy_static;
 
 fn main() {
     let filename: &str = "data/8.csv";
