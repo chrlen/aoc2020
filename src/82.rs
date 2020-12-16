@@ -25,7 +25,7 @@ fn main() {
 
     fn iterate(index: i32, acc: i32, p: &Vec<(i32, String, i32)>) -> (i32, i32) {
         let (num, op, step) = p.get(index as usize).unwrap();
-        println!("{} {}", op, step);
+        // println!("{} {}", op, step);
         match &op[..] {
             "nop" => (index + 1, acc),
             "acc" => (index + 1, acc + step),
@@ -43,7 +43,7 @@ fn main() {
 
         while !done {
             let (new_index, new_acc) = iterate(index, acc, p);
-            println!("{} {}", new_index, new_acc);
+            // println!("{} {}", new_index, new_acc);
 
             if mem.contains(&new_index) {
                 res = acc;
@@ -59,9 +59,39 @@ fn main() {
         }
         (true, 4)
     }
-
-    let p_mod = program
+    let (res, acc) = terminates(&program);
+    // println!("{} {}", res, acc);
+    let p_mod: Vec<Vec<(i32, String, i32)>> = program
         .iter()
         .filter(|(num, op, step)| *op == "nop" || *op == "jmp")
-        .map(|(num, op, step)| op);
+        .map(|(num, op, step)| {
+            let new: Vec<(i32, String, i32)> = program
+                .iter()
+                .map(|(n, o, s)| {
+                    if n == num {
+                        if op == "nop" {
+                            //(n, "jmp", s)
+                            (n.clone(), "jmp".to_string(), s.clone())
+                        } else {
+                            //(n, "nop", s)
+                            (n.clone(), "nop".to_string(), s.clone())
+                        }
+                    } else {
+                        (n.clone(), o.to_string(), s.clone())
+                    }
+                })
+                .collect();
+            new
+        })
+        .collect();
+
+    let res: Vec<(bool, i32)> = p_mod
+        .iter()
+        .map(|x| terminates(&x))
+        .filter(|(a, b)| *a)
+        .collect();
+
+    for (res, acc) in res {
+        println!("{} {}", res, acc);
+    }
 }

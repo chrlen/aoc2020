@@ -11,12 +11,13 @@ rayon = "1.5"
 itertools = "0.9"
 regex = "1"
 lazy_static = "1.4.0"
+itertools-num = "0.1"
 
 [lib]
 name = "utils"
 path = "src/utils.rs"
 
 [[bin]]
-name = "82"
-path = "src/82.rs"
+name = "12_1"
+path = "src/12_1.rs"
 
